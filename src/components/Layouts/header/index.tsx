@@ -1,62 +1,79 @@
 "use client";
 
-import { SearchIcon } from "@/assets/icons";
-import Image from "next/image";
-import Link from "next/link";
+import { usePathname } from "next/navigation";
+
 import { useSidebarContext } from "../sidebar/sidebar-context";
 import { MenuIcon } from "./icons";
 import { Notification } from "./notification";
 import { ThemeToggleSwitch } from "./theme-toggle";
 import { UserInfo } from "./user-info";
 
+const pageMeta: Record<string, { title: string; subtitle: string }> = {
+  "/dashboard": {
+    title: "Bank Dashboard",
+    subtitle: "Operations overview and performance metrics",
+  },
+  "/dashboard/customers": {
+    title: "Customers",
+    subtitle: "Manage customer records and onboarding",
+  },
+  "/dashboard/accounts": {
+    title: "Accounts",
+    subtitle: "Track balances and account activity",
+  },
+  "/dashboard/transactions": {
+    title: "Transactions",
+    subtitle: "Monitor transfers, deposits, and withdrawals",
+  },
+  "/dashboard/cards": {
+    title: "Cards",
+    subtitle: "Manage issued cards and card status",
+  },
+  "/dashboard/reports": {
+    title: "Reports",
+    subtitle: "View banking and operational reports",
+  },
+  "/dashboard/users": {
+    title: "Users",
+    subtitle: "Manage system access and roles",
+  },
+};
+
 export function Header() {
   const { toggleSidebar, isMobile } = useSidebarContext();
+  const pathname = usePathname();
+
+  const current =
+    pageMeta[pathname] ||
+    Object.entries(pageMeta).find(([key]) => pathname.startsWith(key))?.[1] || {
+      title: "Bank Dashboard",
+      subtitle: "Manage daily banking operations",
+    };
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between border-b border-stroke bg-white px-4 py-5 shadow-1 dark:border-stroke-dark dark:bg-gray-dark md:px-5 2xl:px-10">
-      <button
-        onClick={toggleSidebar}
-        className="rounded-lg border px-1.5 py-1 dark:border-stroke-dark dark:bg-[#020D1A] hover:dark:bg-[#FFFFFF1A] lg:hidden"
-      >
-        <MenuIcon />
-        <span className="sr-only">Toggle Sidebar</span>
-      </button>
+    <header className="sticky top-0 z-40 border-b border-gray-3 bg-white/80 px-4 py-4 backdrop-blur dark:border-dark-3 dark:bg-dark-2/80 md:px-6">
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={toggleSidebar}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-gray-3 text-dark dark:border-dark-3 dark:text-white"
+            aria-label="Toggle Sidebar"
+          >
+            <MenuIcon />
+          </button>
 
-      {isMobile && (
-        <Link href={"/"} className="ml-2 max-[430px]:hidden min-[375px]:ml-4">
-          <Image
-            src={"/images/logo/logo-icon.svg"}
-            width={32}
-            height={32}
-            alt=""
-            role="presentation"
-          />
-        </Link>
-      )}
-
-      <div className="max-xl:hidden">
-        <h1 className="mb-0.5 text-heading-5 font-bold text-dark dark:text-white">
-          Dashboard
-        </h1>
-        <p className="font-medium">Admin Dashboard </p>
-      </div>
-
-      <div className="flex flex-1 items-center justify-end gap-2 min-[375px]:gap-4">
-        <div className="relative w-full max-w-[300px]">
-          <input
-            type="search"
-            placeholder="Search"
-            className="flex w-full items-center gap-3.5 rounded-full border bg-gray-2 py-3 pl-[53px] pr-5 outline-none transition-colors focus-visible:border-primary dark:border-dark-3 dark:bg-dark-2 dark:hover:border-dark-4 dark:hover:bg-dark-3 dark:hover:text-dark-6 dark:focus-visible:border-primary"
-          />
-
-          <SearchIcon className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 max-[1015px]:size-5" />
+          <div>
+            <h1 className="text-xl font-semibold text-dark dark:text-white md:text-2xl">
+              {current.title}
+            </h1>
+            <p className="text-sm text-gray-2">{current.subtitle}</p>
+          </div>
         </div>
 
-        <ThemeToggleSwitch />
-
-        {/* <Notification /> */}
-
-        <div className="shrink-0">
+        <div className="flex items-center gap-3">
+          {!isMobile && <ThemeToggleSwitch />}
+          <Notification />
           <UserInfo />
         </div>
       </div>

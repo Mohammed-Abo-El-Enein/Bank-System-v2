@@ -1,70 +1,52 @@
 import Signin from "@/components/Auth/Signin";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Sign in",
+  description: "Secure sign in page for Bank System users.",
 };
 
 export default function SignIn() {
   return (
-    <>
-      <Breadcrumb pageName="Sign In" />
+    <main className="flex min-h-screen items-center bg-gray-2 px-4 py-10 dark:bg-dark-2">
+      <div className="mx-auto grid w-full max-w-5xl overflow-hidden rounded-3xl bg-white shadow-card dark:bg-gray-dark lg:grid-cols-[1.05fr_.95fr]">
+        <section className="p-6 sm:p-10 lg:p-12">
+          <span className="inline-flex rounded-full bg-primary/[0.08] px-3 py-1 text-sm font-medium text-primary">
+            Bank System
+          </span>
 
-      <div className="rounded-[10px] bg-white shadow-1 dark:bg-gray-dark dark:shadow-card">
-        <div className="flex flex-wrap items-center">
-          <div className="w-full xl:w-1/2">
-            <div className="w-full p-4 sm:p-12.5 xl:p-15">
-              <Signin />
+          <h1 className="mt-6 text-3xl font-bold text-dark dark:text-white sm:text-4xl">
+            Welcome back
+          </h1>
+
+          <p className="mt-3 max-w-xl text-sm text-dark-5 dark:text-dark-6 sm:text-base">
+            Sign in with your assigned credentials to access internal banking
+            operations or the customer portal.
+          </p>
+
+          <div className="mt-8">
+            <Signin />
+          </div>
+        </section>
+
+        <aside className="hidden border-l border-stroke bg-gray-2 p-10 dark:border-dark-3 dark:bg-dark-2 lg:block">
+          <h2 className="text-2xl font-semibold text-dark dark:text-white">
+            Banking access
+          </h2>
+
+          <div className="mt-6 space-y-4 text-sm text-dark-5 dark:text-dark-6">
+            <div className="rounded-2xl bg-white p-4 shadow-sm dark:bg-gray-dark">
+              Admins, staff, and tellers are routed to the dashboard.
+            </div>
+            <div className="rounded-2xl bg-white p-4 shadow-sm dark:bg-gray-dark">
+              Customers are routed to the client portal.
+            </div>
+            <div className="rounded-2xl bg-white p-4 shadow-sm dark:bg-gray-dark">
+              Public and auth pages stay separate from the dashboard layout.
             </div>
           </div>
-
-          <div className="hidden w-full p-7.5 xl:block xl:w-1/2">
-            <div className="custom-gradient-1 overflow-hidden rounded-2xl px-12.5 pt-12.5 dark:!bg-dark-2 dark:bg-none">
-              <Link className="mb-10 inline-block" href="/">
-                <Image
-                  className="hidden dark:block"
-                  src={"/images/logo/logo.svg"}
-                  alt="Logo"
-                  width={176}
-                  height={32}
-                />
-                <Image
-                  className="dark:hidden"
-                  src={"/images/logo/logo-dark.svg"}
-                  alt="Logo"
-                  width={176}
-                  height={32}
-                />
-              </Link>
-              <p className="mb-3 text-xl font-medium text-dark dark:text-white">
-                Sign in to your account
-              </p>
-
-              <h1 className="mb-4 text-2xl font-bold text-dark dark:text-white sm:text-heading-3">
-                Welcome Back!
-              </h1>
-
-              <p className="w-full max-w-[375px] font-medium text-dark-4 dark:text-dark-6">
-                Please sign in to your account by completing the necessary
-                fields below
-              </p>
-
-              <div className="mt-31">
-                <Image
-                  src={"/images/grids/grid-02.svg"}
-                  alt="Logo"
-                  width={405}
-                  height={325}
-                  className="mx-auto dark:opacity-30"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        </aside>
       </div>
-    </>
+    </main>
   );
 }

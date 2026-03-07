@@ -27,10 +27,11 @@ export default function CustomersPage() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchCustomers = async () => {
+  const fetchCustomers = async (): Promise<void> => {
     try {
       setLoading(true);
-      const data = await apiRequest("/customers");
+
+      const data = await apiRequest<Customer[]>("/customers");
       setCustomers(data);
     } catch (error) {
       console.error("Fetch Error:", error);
@@ -40,29 +41,31 @@ export default function CustomersPage() {
   };
 
   useEffect(() => {
-    fetchCustomers();
+    void fetchCustomers();
   }, []);
 
-  const handleFreeze = async (id: number) => {
+  const handleFreeze = async (id: number): Promise<void> => {
     if (!confirm("Are you sure you want to freeze this customer?")) return;
 
     try {
       await apiRequest(`/customers/${id}`, {
         method: "DELETE",
       });
-      fetchCustomers();
+
+      await fetchCustomers();
     } catch (error) {
       console.error("Freeze Error:", error);
     }
   };
 
-  const handleActivate = async (id: number) => {
+  const handleActivate = async (id: number): Promise<void> => {
     try {
       await apiRequest(`/customers/${id}`, {
         method: "PUT",
         body: JSON.stringify({ status: "active" }),
       });
-      fetchCustomers();
+
+      await fetchCustomers();
     } catch (error) {
       console.error("Activate Error:", error);
     }
@@ -96,12 +99,11 @@ export default function CustomersPage() {
                 {customers.map((customer) => (
                   <tr
                     key={customer.id}
-                    className="border-b border-gray-3 dark:border-dark-3 hover:bg-gray-1 dark:hover:bg-dark-3 transition"
+                    className="border-b border-gray-3 transition hover:bg-gray-1 dark:border-dark-3 dark:hover:bg-dark-3"
                   >
-                    {/* Account Number */}
                     <td className="px-4 py-3">
                       {customer.accounts?.length ? (
-                        <span className="bg-gray-2 dark:bg-dark-3 px-3 py-1 rounded-lg text-xs">
+                        <span className="rounded-lg bg-gray-2 px-3 py-1 text-xs dark:bg-dark-3">
                           {customer.accounts[0].account_number}
                         </span>
                       ) : (
@@ -109,13 +111,10 @@ export default function CustomersPage() {
                       )}
                     </td>
 
-                    {/* Balance */}
                     <td className="px-4 py-3">
                       {customer.accounts?.length ? (
-                        <span className="bg-green-light-6 text-green px-3 py-1 rounded-lg text-xs font-semibold">
-                          {parseFloat(
-                            customer.accounts[0].balance
-                          ).toFixed(2)}{" "}
+                        <span className="rounded-lg bg-green-light-6 px-3 py-1 text-xs font-semibold text-green">
+                          {parseFloat(customer.accounts[0].balance).toFixed(2)}{" "}
                           {customer.accounts[0].currency}
                         </span>
                       ) : (
@@ -123,25 +122,19 @@ export default function CustomersPage() {
                       )}
                     </td>
 
-                    {/* Name */}
-                    <td className="px-4 py-3">
-                      {customer.customer_name}
-                    </td>
+                    <td className="px-4 py-3">{customer.customer_name}</td>
 
-                    {/* National ID */}
                     <td className="px-4 py-3 text-dark-6">
                       {customer.national_id}
                     </td>
 
-                    {/* Phone */}
                     <td className="px-4 py-3 text-dark-6">
                       {customer.mobile_number}
                     </td>
 
-                    {/* Status */}
                     <td className="px-4 py-3">
                       <span
-                        className={`px-3 py-1 rounded-full text-xs ${
+                        className={`rounded-full px-3 py-1 text-xs ${
                           customer.status === "active"
                             ? "bg-green-light-6 text-green"
                             : "bg-red-light-6 text-red"
@@ -151,18 +144,17 @@ export default function CustomersPage() {
                       </span>
                     </td>
 
-                    {/* Actions */}
-                    <td className="px-4 py-3 text-right space-x-2">
+                    <td className="space-x-2 px-4 py-3 text-right">
                       <Link
                         href={`/dashboard/customers/${customer.id}`}
-                        className="bg-primary text-white px-3 py-1 rounded-lg text-xs"
+                        className="rounded-lg bg-primary px-3 py-1 text-xs text-white"
                       >
                         View
                       </Link>
 
                       <Link
                         href={`/dashboard/customers/${customer.id}/edit`}
-                        className="bg-yellow-light-4 text-yellow px-3 py-1 rounded-lg text-xs"
+                        className="rounded-lg bg-yellow-light-4 px-3 py-1 text-xs text-yellow"
                       >
                         Edit
                       </Link>
@@ -170,7 +162,7 @@ export default function CustomersPage() {
                       {customer.status === "active" && (
                         <button
                           onClick={() => handleFreeze(customer.id)}
-                          className="bg-red-light-6 text-red px-3 py-1 rounded-lg text-xs"
+                          className="rounded-lg bg-red-light-6 px-3 py-1 text-xs text-red"
                         >
                           Freeze
                         </button>
@@ -179,7 +171,7 @@ export default function CustomersPage() {
                       {customer.status === "inactive" && (
                         <button
                           onClick={() => handleActivate(customer.id)}
-                          className="bg-green-light-6 text-green px-3 py-1 rounded-lg text-xs"
+                          className="rounded-lg bg-green-light-6 px-3 py-1 text-xs text-green"
                         >
                           Activate
                         </button>

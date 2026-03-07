@@ -1,30 +1,16 @@
 "use client";
 
 import { SidebarProvider } from "@/components/Layouts/sidebar/sidebar-context";
-import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/context/AuthContext";
+import { ThemeProvider } from "next-themes";
+import type { ReactNode } from "react";
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider defaultTheme="light" attribute="class">
       <AuthProvider>
-        <SidebarProvider>
-          {children}
-        </SidebarProvider>
+        <SidebarProvider>{children}</SidebarProvider>
       </AuthProvider>
     </ThemeProvider>
   );
 }
-// 
-// "use client";
-
-// import { SidebarProvider } from "@/components/Layouts/sidebar/sidebar-context";
-// import { ThemeProvider } from "next-themes";
-
-// export function Providers({ children }: { children: React.ReactNode }) {
-//   return (
-//     <ThemeProvider defaultTheme="light" attribute="class">
-//       <SidebarProvider>{children}</SidebarProvider>
-//     </ThemeProvider>
-//   );
-

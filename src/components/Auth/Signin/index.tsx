@@ -1,32 +1,19 @@
-import Link from "next/link";
-import GoogleSigninButton from "../GoogleSigninButton";
 import SigninWithPassword from "../SigninWithPassword";
 
 export default function Signin() {
   return (
-    <>
-      <GoogleSigninButton text="Sign in" />
-
-      <div className="my-6 flex items-center justify-center">
-        <span className="block h-px w-full bg-stroke dark:bg-dark-3"></span>
-        <div className="block w-full min-w-fit bg-white px-3 text-center font-medium dark:bg-gray-dark">
-          Or sign in with email
-        </div>
-        <span className="block h-px w-full bg-stroke dark:bg-dark-3"></span>
-      </div>
-
+    <div className="space-y-6">
       <div>
-        <SigninWithPassword />
-      </div>
-
-      <div className="mt-6 text-center">
-        <p>
-          Don’t have any account?{" "}
-          <Link href="/auth/sign-up" className="text-primary">
-            Sign Up
-          </Link>
+        <h2 className="text-xl font-semibold text-dark dark:text-white">
+          Sign in to continue
+        </h2>
+        <p className="mt-2 text-sm text-dark-5 dark:text-dark-6">
+          Enter your email and password. Unused template actions were removed
+          until they are actually implemented.
         </p>
       </div>
-    </>
+
+      <SigninWithPassword />
+    </div>
   );
 }
